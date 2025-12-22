@@ -3,6 +3,10 @@
   "tenant-mode": "dedicated",
   "scopes": [
     {
+      "name": "$XSAPPNAME.user",
+      "description": "user"
+    },
+    {
       "name": "$XSAPPNAME.admin",
       "description": "admin"
     }
@@ -10,21 +14,28 @@
   "attributes": [],
   "role-templates": [
     {
+      "name": "user",
+      "description": "OWASP JAVA User",
+      "scope-references": ["$XSAPPNAME.user"],
+      "attribute-references": []
+    },
+    {
       "name": "admin",
-      "description": "generated",
-      "scope-references": [
-        "$XSAPPNAME.admin"
-      ],
+      "description": "OWASP JAVA Admin",
+      "scope-references": ["$XSAPPNAME.admin"],
       "attribute-references": []
     }
   ],
   "role-collections": [
     {
+      "name": "OWASP JAVA User",
+      "description": "OWASP JAVA User",
+      "role-template-references": ["$XSAPPNAME.user"]
+    },
+    {
       "name": "admin",
-      "description": "generated admin",
-      "role-template-references": [
-        "$XSAPPNAME.admin"
-      ]
+      "description": "OWASP JAVA Admin",
+      "role-template-references": ["$XSAPPNAME.admin"]
     }
   ],
   "oauth2-configuration": {

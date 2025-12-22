@@ -1,12 +1,19 @@
 {
+  "welcomeFile": "/index.html",
   "authenticationMethod": "route",
   "routes": [
     {
-      "source": "^(.*)$",
-      "target": "/odata/$1",
+      "source": "^/api/(.*)$",
+      "target": "$1",
       "csrfProtection": false,
       "authenticationType": "xsuaa",
       "destination": "srv-api"
+    },
+    {
+      "source": "^(.*)$",
+      "target": "$1",
+      "authenticationType": "none",
+      "localDir": "./"
     }
   ]
 }

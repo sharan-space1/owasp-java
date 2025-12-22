@@ -6,7 +6,7 @@ spring:
       on-profile: default
   sql:
     init:
-      platform: h2
+      platform: hana
 cds:
   security:
     mock:
@@ -19,7 +19,7 @@ cds:
           password: user
   data-source:
     auto-config:
-      enabled: false
+      enabled: true
 ---
 management:
   endpoint:
