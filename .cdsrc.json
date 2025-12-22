@@ -1,0 +1,13 @@
+{
+  "cdsc": {
+    "draftMessages": true
+  },
+  "requires": {
+    "[production]": {
+      "auth": "xsuaa"
+    },
+    "db": "hana",
+    "destinations": true,
+    "html5-runtime": true
+  }
+}

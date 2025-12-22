@@ -1,0 +1,12 @@
+{
+  "authenticationMethod": "route",
+  "routes": [
+    {
+      "source": "^(.*)$",
+      "target": "/odata/$1",
+      "csrfProtection": false,
+      "authenticationType": "xsuaa",
+      "destination": "srv-api"
+    }
+  ]
+}
