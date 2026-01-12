@@ -33,7 +33,7 @@
       "role-template-references": ["$XSAPPNAME.user"]
     },
     {
-      "name": "admin",
+      "name": "OWASP JAVA Admin",
       "description": "OWASP JAVA Admin",
       "role-template-references": ["$XSAPPNAME.admin"]
     }
