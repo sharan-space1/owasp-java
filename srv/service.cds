@@ -14,7 +14,7 @@ service AdminService @(requires: 'admin') {
   entity Authors as projection on ns.Authors;
 }
 
-service OrderService {
+service OrderService @(requires: 'authenticated-user') {
   @restrict: [
     { grant: ['READ'], to: 'any' },
     { grant: ['CREATE','UPDATE','DELETE'], to: 'admin'}
