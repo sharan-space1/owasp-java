@@ -6,6 +6,8 @@ service BookService {
     { grant: ['CREATE','UPDATE','DELETE'], to: 'admin' }
   ]
   entity Books as projection on ns.Books;
+
+  function findByTitle(title: String) returns array of Books;
 }
 
 service AdminService @(requires: 'admin') {

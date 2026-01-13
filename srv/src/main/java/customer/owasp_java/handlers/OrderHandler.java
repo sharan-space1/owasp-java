@@ -1,7 +1,5 @@
 package customer.owasp_java.handlers;
 
-import java.nio.charset.StandardCharsets;
-import java.util.Base64;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
