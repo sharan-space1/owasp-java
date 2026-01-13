@@ -16,7 +16,10 @@ service AdminService @(requires: 'admin') {
 
 service OrderService {
   @restrict: [
+    { grant: ['READ'], to: 'any' },
     { grant: ['CREATE','UPDATE','DELETE'], to: 'admin'}
   ]
   entity Orders as projection on ns.Orders;
+
+  action approveOrder(orderId: UUID);
 }

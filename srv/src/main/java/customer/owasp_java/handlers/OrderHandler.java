@@ -8,9 +8,12 @@ import org.springframework.stereotype.Component;
 import com.sap.cds.Result;
 import com.sap.cds.ql.Select;
 import com.sap.cds.ql.Update;
+import com.sap.cds.services.EventContext;
 import com.sap.cds.services.cds.CdsCreateEventContext;
+import com.sap.cds.services.cds.CdsUpdateEventContext;
 import com.sap.cds.services.handler.EventHandler;
 import com.sap.cds.services.handler.annotations.On;
+import com.sap.cds.services.handler.annotations.Before;
 import com.sap.cds.services.handler.annotations.ServiceName;
 import com.sap.cds.services.persistence.PersistenceService;
 
@@ -61,5 +64,43 @@ public class OrderHandler implements EventHandler {
             data.put("status", "CONFIRMED");
             data.remove("signature");
         }
+    }
+
+    @Before(event = "UPDATE", entity = "OrderService.Orders")
+    public void preventDirectStatusUpdate(CdsUpdateEventContext context) {
+
+        boolean statusChanged = context.getCqn().entries().stream()
+                .anyMatch(e -> e.containsKey("status"));
+
+        if (statusChanged) {
+            throw new RuntimeException("Order status can only be changed via approveOrder action");
+        }
+    }
+
+    @On(event = "approveOrder")
+    public void approveOrder(EventContext context) {
+
+        String orderId = (String) context.get("orderId");
+        
+        if (orderId == null || orderId.isEmpty()) {
+            throw new RuntimeException("Order ID is required");
+        }
+        
+        Map<String, Object> order = db.run(Select.from("OrderService.Orders")
+                .columns("status")
+                .where(o -> o.get("ID").eq(orderId))).first()
+                .orElseThrow(() -> new RuntimeException("Order not found"));
+
+        String status = (String) order.get("status");
+
+        if (!"CONFIRMED".equals(status)) {
+            throw new RuntimeException("Order cannot be approved in state: " + status);
+        }
+
+        db.run(Update.entity("OrderService.Orders")
+                .data("status", "APPROVED")
+                .where(o -> o.get("ID").eq(orderId)));
+        
+        context.setCompleted();
     }
 }
